@@ -2,7 +2,7 @@ const { Jugador } = require('../models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'clave_secreta_super_segura_up_chiapas';
+const JWT_SECRET = process.env.JWT_SECRET || 'clave_segura';
 
 const login = async (req, res) => {
     try {
@@ -27,7 +27,7 @@ const login = async (req, res) => {
         );
 
         res.json({
-            mensaje: '¡Bienvenido a CourtMatch! 🚀',
+            mensaje: '¡Bienvenido a CourtMatch! ',
             token: token
         });
 
