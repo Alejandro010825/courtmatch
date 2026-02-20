@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+const sequelize = require('../config/db'); 
 const bcrypt = require('bcryptjs'); 
+
 const Jugador = sequelize.define('Jugador', {
     idUser: {
         type: DataTypes.INTEGER,
@@ -12,8 +13,21 @@ const Jugador = sequelize.define('Jugador', {
         allowNull: false,
         unique: true
     },
+    correo: { 
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true 
+    },
     contraseña: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    ubicacion: { 
+        type: DataTypes.ENUM('Norte', 'Sur', 'Centro', 'Oriente', 'Poniente'), 
+        allowNull: false
+    },
+    deporteFavorito: { 
+        type: DataTypes.ENUM('Futbol', 'Basquetbol', 'Voleibol', 'Tenis'),
         allowNull: false
     },
     partidosGanados: {

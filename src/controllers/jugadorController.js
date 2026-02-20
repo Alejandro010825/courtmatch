@@ -3,12 +3,27 @@ const { Jugador, Partido } = require('../models');
 
 const registrar = async (req, res) => {
     try {
+        // 1. Verificamos que el Frontend nos mande todo lo necesario
+        const { nombreUsuario, correo, contraseña, ubicacion, deporteFavorito } = req.body;
+
+        if (!nombreUsuario || !correo || !contraseña || !ubicacion || !deporteFavorito) {
+            return res.status(400).json({ 
+                error: 'Faltan datos. Asegúrate de enviar nombreUsuario, correo, contraseña, ubicacion y deporteFavorito.' 
+            });
+        }
+
+        // 2. Si todo está completo, el Servicio hace la magia
         const jugador = await jugadorService.crearJugador(req.body);
+        
         res.status(201).json({
             mensaje: '¡Jugador creado con éxito!',
             jugador: jugador
         });
     } catch (error) {
+        // Manejo de error si el correo o usuario ya existen
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            return res.status(400).json({ error: 'El usuario o el correo ya están registrados.' });
+        }
         res.status(400).json({ error: error.message });
     }
 };
