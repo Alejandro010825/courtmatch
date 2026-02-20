@@ -1,5 +1,5 @@
 const express = require('express');
-const cors = require('cors'); // 👈 NUEVO: Importamos CORS
+const cors = require('cors'); 
 require('dotenv').config(); 
 
 const sequelize = require('./config/db');
@@ -17,7 +17,6 @@ const Participacion = require('./models/Participacion');
 
 const app = express(); 
 
-// 👈 NUEVO: Le damos permiso a la página web de conectarse
 app.use(cors()); 
 app.use(express.json()); 
 
@@ -31,8 +30,7 @@ const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        // 👈 CAMBIO IMPORTANTE: 'alter: true' actualiza las tablas sin borrarlas
-        await sequelize.sync({ alter: true });
+        await sequelize.sync({ force: true });
         
         console.log(' Conexión exitosa. Base de datos actualizada y tablas sincronizadas.');
 

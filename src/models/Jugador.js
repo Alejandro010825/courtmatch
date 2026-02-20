@@ -23,7 +23,7 @@ const Jugador = sequelize.define('Jugador', {
         allowNull: false
     },
     ubicacion: { 
-        type: DataTypes.ENUM('Norte', 'Sur', 'Centro', 'Oriente', 'Poniente'), 
+        type: DataTypes.ENUM('copoya', 'jobo', 'TuxtlaGTZ', 'Comitan', 'villacorzo'), 
         allowNull: false
     },
     deporteFavorito: { 
