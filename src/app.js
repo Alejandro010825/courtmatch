@@ -3,17 +3,16 @@ const cors = require('cors');
 require('dotenv').config(); 
 
 const sequelize = require('./config/db');
-//rutas
+
 const statusRoutes = require('./routes/statusRoutes.js');
 const jugadorRoutes = require('./routes/jugadorRoutes'); 
 const partidoRoutes = require('./routes/partidoRoutes'); 
 const participacionRoutes = require('./routes/participacionRoutes');
 const authRoutes = require('./routes/authRoutes'); 
+const deporteRoutes = require('./routes/deporteRoutes');
 
-//modelos
-const Jugador = require('./models/Jugador'); 
-const Partido = require('./models/Partido');
-const Participacion = require('./models/Participacion');
+// Importamos todo desde el index de modelos
+const { Jugador, Partido, Participacion, Deporte } = require('./models');
 
 const app = express(); 
 
@@ -25,15 +24,14 @@ app.use('/api/jugadores', jugadorRoutes);
 app.use('/api/partidos', partidoRoutes); 
 app.use('/api/participaciones', participacionRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/deportes', deporteRoutes);
 
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
-        await sequelize.sync({ force: true });
-        
-        console.log(' Conexión exitosa. Base de datos actualizada y tablas sincronizadas.');
-
+        await sequelize.sync({ alter: true });
+        console.log(' Conexión exitosa. Base de datos actualizada.');
         app.listen(PORT, () => {
             console.log(` CourtMatch corriendo en: http://localhost:${PORT}`);
         });

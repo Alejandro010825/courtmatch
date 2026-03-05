@@ -1,13 +1,13 @@
 const jugadorService = require('../services/jugadorService');
-const { Jugador, Partido } = require('../models'); 
+const { Jugador, Partido, Deporte } = require('../models'); 
 
 const registrar = async (req, res) => {
     try {
-        const { nombreUsuario, correo, contraseña, ubicacion, deporteFavorito } = req.body;
+        const { nombreUsuario, correo, contraseña, ubicacion, idDeporteFavorito } = req.body;
 
-        if (!nombreUsuario || !correo || !contraseña || !ubicacion || !deporteFavorito) {
+        if (!nombreUsuario || !correo || !contraseña || !ubicacion || !idDeporteFavorito) {
             return res.status(400).json({ 
-                error: 'Faltan datos. Asegúrate de enviar nombreUsuario, correo, contraseña, ubicacion y deporteFavorito.' 
+                error: 'Faltan datos. Asegúrate de enviar nombreUsuario, correo, contraseña, ubicacion e idDeporteFavorito.' 
             });
         }
 
@@ -21,13 +21,21 @@ const registrar = async (req, res) => {
         if (error.name === 'SequelizeUniqueConstraintError') {
             return res.status(400).json({ error: 'El usuario o el correo ya están registrados.' });
         }
+        if (error.name === 'SequelizeForeignKeyConstraintError') {
+            return res.status(400).json({ error: 'El deporte seleccionado no existe en la base de datos.' });
+        }
         res.status(400).json({ error: error.message });
     }
 };
 
 const obtenerJugadores = async (req, res) => {
     try {
-        const jugadores = await Jugador.findAll(); 
+        const jugadores = await Jugador.findAll({
+            include: [{
+                model: Deporte,
+                attributes: ['nombreDeporte'] 
+            }]
+        }); 
         res.json(jugadores);
     } catch (error) {
         console.error(error);

@@ -26,9 +26,13 @@ const Jugador = sequelize.define('Jugador', {
         type: DataTypes.ENUM('copoya', 'jobo', 'TuxtlaGTZ', 'Comitan', 'villacorzo'), 
         allowNull: false
     },
-    deporteFavorito: { 
-        type: DataTypes.ENUM('Futbol', 'Basquetbol', 'Voleibol', 'Tenis'),
-        allowNull: false
+    idDeporteFavorito: { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'deportes',
+            key: 'idDeporte'
+        }
     },
     partidosGanados: {
         type: DataTypes.INTEGER,
